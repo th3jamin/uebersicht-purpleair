@@ -12,12 +12,12 @@ Widget Screenshot:
 
 Sample screenshots of different states of the widget:
 
-![Widget Screenshot](https://raw.githubusercontent.com/th3jamin/uebersicht-purpleair/master/screenshots/widget-screenshot.png =498x554)
-![Widget1 Screenshot](https://raw.githubusercontent.com/th3jamin/uebersicht-purpleair/master/screenshots/widget1-screenshot.png =498x554)
-![Widget2 Screenshot](https://raw.githubusercontent.com/th3jamin/uebersicht-purpleair/master/screenshots/widget2-screenshot.png =498x554)
-![Widget3 Screenshot](https://raw.githubusercontent.com/th3jamin/uebersicht-purpleair/master/screenshots/widget3-screenshot.png =498x554)
+![Widget Screenshot](https://raw.githubusercontent.com/th3jamin/uebersicht-purpleair/master/screenshots/widget-screenshot.png){:height="554px" width="498px"}
+![Widget1 Screenshot](https://raw.githubusercontent.com/th3jamin/uebersicht-purpleair/master/screenshots/widget1-screenshot.png){:height="554px" width="498px"}
+![Widget2 Screenshot](https://raw.githubusercontent.com/th3jamin/uebersicht-purpleair/master/screenshots/widget2-screenshot.png){:height="554px" width="498px"}
+![Widget3 Screenshot](https://raw.githubusercontent.com/th3jamin/uebersicht-purpleair/master/screenshots/widget3-screenshot.png){:height="554px" width="498px"}
 
 Screenshot shown on the desktop with other Übersicht:
 
 Full screenshot
-![Resized](https://raw.githubusercontent.com/th3jamin/uebersicht-purpleair/master/full-screenshot.png)
+![Resized](https://raw.githubusercontent.com/th3jamin/uebersicht-purpleair/master/screenshots/full-screenshot.png)
