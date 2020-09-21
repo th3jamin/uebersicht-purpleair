@@ -3,7 +3,8 @@
 A Übersicht widget to show the current AQI for your region using the [Purple Air API](http://api.purpleair.com/).
 
 ## Setup
-  * You will need an Api key which can be requested from Purple Air. They don't seem to have an online way to do this so you can shoot a quick email to contact.purpleair.com they respond very fast.
+  * A Purple Air API Key. 
+    * Send an email request to [contact.purpleair.com](mailto:contact.purpleair.com), they will respond very fast. You need the `READ` key.
   * Determine the GPS bounding to search for sensors:
     * https://boundingbox.klokantech.com/
     * Export the Coordinates in CSV format
