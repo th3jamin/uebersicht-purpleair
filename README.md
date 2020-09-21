@@ -1,46 +1,16 @@
 # uebersicht-purpleair
 
-A Übersicht widget to display the time at different time zones. Can show multiple time zones from 1 to infinite (might not fit in your display). Dark mode support, sunrise/sunset aware.
+A Übersicht widget to show the current AQI for your region using the [Purple Air API](http://api.purpleair.com/).
 
-<img src="https://github.com/rafcontreras/Ubersicht-World-Clock-Widget/raw/master/clock_color_change.gif" width="304" height="293" title="Clocks animation">
-
-## Performance
-
-The seconds, minutes, and hours pointers position change based on CSS animations, so it is a __very low__ CPU/memory intensive widget. If your computer is running a resource intensive application, the CSS might fall behind, so I've decided to set a 30 minute refresh interval.
-
-## Usage
-Edit the **_places.json_** file in the widget directory, you will need latitude (`lat`), longitude (`lng`), and timezone (`timezone`) of the clock you want to display, the possible timezones are included in the **_timezones.json_** file. These timezones are the ones available in MacOS. The `name` key is whatever you want to display on the clock face.
-
-[Latitude and Longitude Finder](https://www.latlong.net) is a very good way to find the coordinates of almost any place.
-
-```json
-{
-  "name": "México City",
-  "timezone": "America/Mexico_City",
-  "lat": 19.451054,
-  "lng": -99.125519
-}
-```
-
-## Cool stuff
-- Automatic color change to dark mode if your computer is set to go into it automatically or you have it as default.
-- Clock face will change color at sunrise and sunset times for each latitude/longitude.
-- Smooth pointer animation.
-
-## Todo
-- [ ] Ability to resize as a percentage of the screen, while it can be done; if you are working with two screens in different sizes, it will use the percentage of only one screen.
-- [x] Show am/pm indicator for places where there's no sunset.
-- [ ] Maybe a smarter grid.
-- [x] Make prettier hour, minute, second pointers.
+## Setup
+  * You will need an Api key which can be requested from Purple Air. They don't seem to have an online way to do this so you can shoot a quick email to contact.purpleair.com they respond very fast.
+  * Determine the bounding box, NW lat/long - SE lat/long for the area you want to scrape for sensors. I use Google maps for this, right click at any point and select "What's Here", then you will see the lat/long for that location.
 
 ## Screenshots
 
-Full screenshot in dark mode
+Widget Screenshot:
 
-![Full screenshot in dark mode](https://github.com/rafcontreras/Ubersicht-World-Clock-Widget/raw/master/full_screenshot.png)
+![Widget Screenshot](https://raw.githubusercontent.com/th3jamin/uebersicht-purpleair/master/widget-screenshot.png)
 
-Resized
-![Resized](https://github.com/rafcontreras/Ubersicht-World-Clock-Widget/raw/master/big_size.png)
-
-Multiple Clocks
-![Multiple Clocks](https://github.com/rafcontreras/Ubersicht-World-Clock-Widget/raw/master/multiple_clocks.png)
+Full screenshot
+![Resized](https://raw.githubusercontent.com/th3jamin/uebersicht-purpleair/master/full-screenshot.png)
