@@ -15,7 +15,7 @@ Sample screenshots of different states of the widget:
 ![Widget Screenshot](https://raw.githubusercontent.com/th3jamin/uebersicht-purpleair/master/screenshots/widget-screenshot.png)
 ![Widget1 Screenshot](https://raw.githubusercontent.com/th3jamin/uebersicht-purpleair/master/screenshots/widget1-screenshot.png)
 ![Widget2 Screenshot](https://raw.githubusercontent.com/th3jamin/uebersicht-purpleair/master/screenshots/widget2-screenshot.png)
-![Widget3 Screenshot](https://raw.githubusercontent.com/th3jamin/uebersicht-purpleair/master/screenshots/widget3-screenshot.png)
+![Widget3 Screenshot](https://raw.githubusercontent.com/th3jamin/uebersicht-purpleair/master/screenshots/widget4-screenshot.png)
 
 Screenshot shown on the desktop with other Übersicht:
 
