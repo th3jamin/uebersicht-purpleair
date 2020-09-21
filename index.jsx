@@ -1,4 +1,6 @@
-import { css } from "uebersicht"; // emotion css - never played with it :(
+import { css } from "uebersicht"; // emotion css
+import {AQIPM25, AQICategory} from "./src/aqi";
+import {formatAQIDate} from "./src/date-fmt";
 
 // Bounding Rectangle for Sensor to Include
 export const nwlat = '';
@@ -12,51 +14,45 @@ export const APIKEYPURPLE = 'YOUR PURPLE AIR API KEY';
 export const fields = ['sensor_index','name','pm2.5','pm2.5_10minute','pm2.5_30minute','pm2.5_60minute','pm2.5_6hour','pm2.5_24hour','pm2.5_1week']
 export const readingFields = ['pm2.5','pm2.5_10minute','pm2.5_30minute','pm2.5_60minute','pm2.5_6hour','pm2.5_24hour','pm2.5_1week'];
 
-export const className = {
-  top: 20,
-  left: '78%',
-  color: '#fff',
-  maxWidth: '240px',
-  borderRadius: '10px',
-  MozBorderRadius :'10px',
-  WebkitBorderRadius: '10px',
-  opacity: .8
+export const command = dispatch => {
+  fetch(`https://api.purpleair.com/v1/sensors?location_type=0&nwlat=${nwlat}&nwlng=${nwlng}&selat=${selat}&selng=${selng}&api_key=${APIKEYPURPLE}&fields=${fields.join(',')}`)
+    .then(res => {
+      res.json().then(data => {
+        dispatch({ type: "FETCH_SUCCEDED", data: data });
+      });
+    })
+    .catch(error => {
+      dispatch({ type: "FETCH_FAILED", error: error });
+    });
+};
+
+function computeAvgPm25ReadingFields(data, readingsList, fieldList) {
+  var avgs = {};
+  for (var i=0; i<readingsList.length; ++i) {
+    var totalPM25 = 0;
+    var readingLoc = fieldList.indexOf(readingsList[i]);
+
+    for (var j=0; j<data.length; ++j) {
+      const pm25 = data[j][readingLoc];
+      const aqiPM25 = AQIPM25(data[j][readingLoc]);
+      totalPM25 += aqiPM25;
+    }
+
+    const aqius = Math.round(totalPM25 / data.length);
+    avgs[readingsList[i]] = aqius;
+  }
+
+  return avgs;
 }
 
-export const fullwrapper = css`
-  position: fixed;
-  top: 20;
-  left: 78%;
-  border-radius:6px;
-  -moz-border-radius:6px;
-  -webkit-border-radius:6px;
-  border:1px solid #383838;
-  display:inline-block;
-  background-color:#383838;
-  -webkit-box-shadow: 1px 1px 1px 0 rgba(0,0,0,0.075);
-  opacity: 0.7;
-`
-export const wrapper = css`
-  width:180px;
-  margin:8px;
-  border:0px solid black;
-  line-height:1.2;
-  color:black;
-`
+function computeGradient(percent, color1, color2) {
+  let resultRed = Math.round(color1.red + percent * (color2.red - color1.red));
+  let resultGreen = Math.round(color1.green + percent * (color2.green - color1.green));
+  let resultBlue = Math.round(color1.blue + percent * (color2.blue - color1.blue));
+  return {red: resultRed, green: resultGreen, blue: resultBlue};
+}
 
-export const aqivalue = css`
-  font-size:28px;
-  text-align: -webkit-center;
-`
-
-export const loadingwrapper = css`
-  padding:5px 0px;
-  background-color: #f0f0f0;
-  color:#383838;
-  border-radius:3px;
-  -moz-border-radius:3px;
-  -webkit-border-radius:3px;
-`
+export const refreshFrequency = 600000; // 10 min
 
 function AQICategoryCSS(AQIndex) {
   var AQI = parseFloat(AQIndex)
@@ -105,68 +101,61 @@ function AQICategoryCSS(AQIndex) {
   return AQICategoryCSS;
 }
 
-export const command = dispatch => {
-  fetch(`https://api.purpleair.com/v1/sensors?location_type=0&nwlat=${nwlat}&nwlng=${nwlng}&selat=${selat}&selng=${selng}&api_key=${APIKEYPURPLE}&fields=${fields.join(',')}`)
-    .then(res => {
-      res.json().then(data => {
-        dispatch({ type: "FETCH_SUCCEDED", data: data });
-      });
-    })
-    .catch(error => {
-      dispatch({ type: "FETCH_FAILED", error: error });
-    });
-};
-
-function computeAvgPm25ReadingFields(data, readingsList, fieldList) {
-  var avgs = {};
-  for (var i=0; i<readingsList.length; ++i) {
-    var totalPM25 = 0;
-    var readingLoc = fieldList.indexOf(readingsList[i]);
-
-    for (var j=0; j<data.length; ++j) {
-      const pm25 = data[j][readingLoc];
-      const aqiPM25 = AQIPM25(data[j][readingLoc]);
-      totalPM25 += aqiPM25;
-    }
-
-    const aqius = Math.round(totalPM25 / data.length);
-    avgs[readingsList[i]] = aqius;
-  }
-
-  return avgs;
+export const className = {
+  top: 20,
+  left: '78%',
+  color: '#fff',
+  maxWidth: '240px',
+  borderRadius: '10px',
+  MozBorderRadius :'10px',
+  WebkitBorderRadius: '10px',
+  opacity: .8
 }
 
-function getDatePart(dtField, parts) {
-  for (let i=0; i<parts.length; ++i) {
-    if (parts[i].type === dtField) {
-      return parts[i].value;
-    }
-  }
-}
+export const fullwrapper = css`
+  position: fixed;
+  top: 20;
+  left: 78%;
+  border-radius:6px;
+  -moz-border-radius:6px;
+  -webkit-border-radius:6px;
+  border:1px solid #383838;
+  display:inline-block;
+  background-color:#383838;
+  -webkit-box-shadow: 1px 1px 1px 0 rgba(0,0,0,0.075);
+  opacity: 0.7;
+`
+export const wrapper = css`
+  width:180px;
+  margin:8px;
+  border:0px solid black;
+  line-height:1.2;
+  color:black;
+`
 
-function computeGradient(percent, color1, color2) {
-  let resultRed = Math.round(color1.red + percent * (color2.red - color1.red));
-  let resultGreen = Math.round(color1.green + percent * (color2.green - color1.green));
-  let resultBlue = Math.round(color1.blue + percent * (color2.blue - color1.blue));
-  return {red: resultRed, green: resultGreen, blue: resultBlue};
-}
+export const aqivalue = css`
+  font-size:28px;
+  text-align: -webkit-center;
+`
 
-export const refreshFrequency = 600000; // ms
+export const loadingwrapper = css`
+  padding:5px 0px;
+  background-color: #f0f0f0;
+  color:#383838;
+  border-radius:3px;
+  -moz-border-radius:3px;
+  -webkit-border-radius:3px;
+`
+
 export const render = state => {
   if (state) {
     const aqiReadings = computeAvgPm25ReadingFields(state.results.data, readingFields, fields);
+
     console.log(aqiReadings);
 
     const unix_timestamp = state.results.data_time_stamp;
-    var readindDate = new Date(unix_timestamp * 1000);
-    let options = {
-      year: 'numeric', month: 'long', day: 'numeric',
-      hour: 'numeric', minute: 'numeric', second: 'numeric',
-      timeZoneName: 'short',
-      hour12: false
-    };
-    var parts = new Intl.DateTimeFormat('en-US', options).formatToParts(readindDate);
-    var dateStr = `On ${getDatePart('month', parts)} ${getDatePart('day', parts)}, ${getDatePart('year', parts)}, ${getDatePart('hour', parts)}:${getDatePart('minute', parts)}:${getDatePart('second', parts)} ${getDatePart('timeZoneName', parts)}`
+    var readingDate = new Date(unix_timestamp * 1000);
+    var dateStr = formatAQIDate(readingDate);
 
     const pm25 = aqiReadings['pm2.5'];
     const pm25_10m = aqiReadings['pm2.5_10minute'];
