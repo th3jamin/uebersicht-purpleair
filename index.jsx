@@ -103,7 +103,7 @@ function AQICategoryCSS(AQIndex) {
 
 export const className = {
   top: 20,
-  left: '78%',
+  left: '73%',
   color: '#fff',
   maxWidth: '240px',
   borderRadius: '10px',

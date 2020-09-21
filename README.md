@@ -21,3 +21,9 @@ Screenshot shown on the desktop with other Übersicht:
 
 Full screenshot
 ![Resized](https://raw.githubusercontent.com/th3jamin/uebersicht-purpleair/master/screenshots/full-screenshot.png)
+
+# Legal
+
+The source for this widget is released under the MIT License.
+
+© 2019 Benjamin Pucci
