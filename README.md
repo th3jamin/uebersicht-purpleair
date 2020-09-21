@@ -11,6 +11,9 @@ A Übersicht widget to show the current AQI for your region using the [Purple Ai
 Widget Screenshot:
 
 ![Widget Screenshot](https://raw.githubusercontent.com/th3jamin/uebersicht-purpleair/master/widget-screenshot.png)
+![Widget1 Screenshot](https://raw.githubusercontent.com/th3jamin/uebersicht-purpleair/master/widget1-screenshot.png)
+![Widget2 Screenshot](https://raw.githubusercontent.com/th3jamin/uebersicht-purpleair/master/widget2-screenshot.png)
+![Widget3 Screenshot](https://raw.githubusercontent.com/th3jamin/uebersicht-purpleair/master/widget3-screenshot.png)
 
 Full screenshot
 ![Resized](https://raw.githubusercontent.com/th3jamin/uebersicht-purpleair/master/full-screenshot.png)
