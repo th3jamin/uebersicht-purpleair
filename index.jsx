@@ -2,14 +2,21 @@ import { css } from "uebersicht"; // emotion css
 import {AQIPM25, AQICategory} from "./src/aqi";
 import {formatAQIDate} from "./src/date-fmt";
 
+/* FOR USER TO FILL IN */
 // Bounding Rectangle for Sensor to Include
-export const nwlat = '';
-export const nwlng = '';
-export const selat = '';
-export const selng = '';
+// Use: https://boundingbox.klokantech.com/ with output format CSV
+// Should be in SWLong,SWLat,NELong,NELat
+export const gpsBoundingBox = '-105.154863,39.861284,-104.983713,39.948288';
 
 // Can request by emailing contact@purpleair.com
 export const APIKEYPURPLE = 'YOUR PURPLE AIR API KEY';
+
+// need to do some conversion for the purple air api that uses NW/SE BBox
+export const gpsBoundingSplit = gpsBoundingBox.split(',');
+export const nwlat = gpsBoundingSplit[3];
+export const nwlng = gpsBoundingSplit[0];
+export const selat = gpsBoundingSplit[1];
+export const selng = gpsBoundingSplit[2];
 
 export const fields = ['sensor_index','name','pm2.5','pm2.5_10minute','pm2.5_30minute','pm2.5_60minute','pm2.5_6hour','pm2.5_24hour','pm2.5_1week']
 export const readingFields = ['pm2.5','pm2.5_10minute','pm2.5_30minute','pm2.5_60minute','pm2.5_6hour','pm2.5_24hour','pm2.5_1week'];
