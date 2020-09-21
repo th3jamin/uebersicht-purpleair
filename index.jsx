@@ -6,7 +6,7 @@ import {formatAQIDate} from "./src/date-fmt";
 // Bounding Rectangle for Sensor to Include
 // Use: https://boundingbox.klokantech.com/ with output format CSV
 // Should be in SWLong,SWLat,NELong,NELat
-export const gpsBoundingBox = '-105.154863,39.861284,-104.983713,39.948288';
+export const gpsBoundingBox = '';
 
 // Can request by emailing contact@purpleair.com
 export const APIKEYPURPLE = 'YOUR PURPLE AIR API KEY';
