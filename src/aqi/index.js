@@ -8,6 +8,10 @@ export function Linear(AQIhigh, AQIlow, Conchigh, Conclow, Concentration) {
 }
 
 export function AQIPM25(Concentration) {
+  if (Concentration < 0) {
+    return -1;
+  }
+
   var Conc = parseFloat(Concentration);
   var c;
   var AQI;
@@ -201,7 +205,9 @@ export function AQINO2(Concentration) {
 export function AQICategory(AQIndex) {
   var AQI = parseFloat(AQIndex)
   var AQICategory;
-  if (AQI <= 50) {
+  if (AQI < 0) {
+    AQICategory = "Loading"
+  } else if (AQI <= 50) {
     AQICategory = "0-50: Air quality is considered satisfactory, and air pollution poses little or no risk.";
   } else if (AQI > 50 && AQI <= 100) {
     AQICategory = "51-100: Air quality is acceptable; however, if they are exposed for 24 hours there may be a moderate health concern for a very small number of people who are unusually sensitive to air pollution.";

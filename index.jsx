@@ -74,7 +74,9 @@ function AQICategoryCSS(AQIndex) {
   const color500 = {red: 115, green: 20, blue: 37}
 
   var AQICategoryCSS;
-  if (AQI <= 50) {
+  if (AQI < 0) {
+    AQICategoryCSS = `background-color: #383838; color: #9c9c9c`;
+  } else if (AQI <= 50) {
     const percent = ((AQI - 0)/50);
     const color = computeGradient(percent, color0, color50);
     AQICategoryCSS = `background-color: rgba(${color.red}, ${color.green}, ${color.blue}, 1);color: black`;
@@ -108,6 +110,49 @@ function AQICategoryCSS(AQIndex) {
   return AQICategoryCSS;
 }
 
+export const initialState = {
+  results: JSON.parse(`{
+    "api_version": "V1.0.6-0.0.8",
+    "time_stamp": 0,
+    "data_time_stamp": 0,
+    "max_age": 604800,
+    "fields": [
+      "sensor_index",
+      "name",
+      "pm2.5",
+      "pm2.5_10minute",
+      "pm2.5_30minute",
+      "pm2.5_60minute",
+      "pm2.5_6hour",
+      "pm2.5_24hour",
+      "pm2.5_1week"
+    ],
+    "data": [
+      [
+        0,
+        "Loading",
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ]
+    ]
+  }`)
+};
+
+export const updateState = (event, previousState) => {
+  if (event.data && !('error' in event.data)) {
+    return {
+      results: event.data
+    }
+  } else {
+    return initialState;
+  }
+};
+
 export const className = {
   top: 20,
   left: '73%',
@@ -119,235 +164,172 @@ export const className = {
   opacity: .8
 }
 
-export const fullwrapper = css`
-  position: fixed;
-  top: 20;
-  left: 78%;
-  border-radius:6px;
-  -moz-border-radius:6px;
-  -webkit-border-radius:6px;
-  border:1px solid #383838;
-  display:inline-block;
-  background-color:#383838;
-  -webkit-box-shadow: 1px 1px 1px 0 rgba(0,0,0,0.075);
-  opacity: 0.7;
-`
-export const wrapper = css`
-  width:180px;
-  margin:8px;
-  border:0px solid black;
-  line-height:1.2;
-  color:black;
-`
-
-export const aqivalue = css`
-  font-size:28px;
-  text-align: -webkit-center;
-`
-
-export const loadingwrapper = css`
-  padding:5px 0px;
-  background-color: #f0f0f0;
-  color:#383838;
-  border-radius:3px;
-  -moz-border-radius:3px;
-  -webkit-border-radius:3px;
-`
-
 export const render = state => {
-  if (state) {
-    const aqiReadings = computeAvgPm25ReadingFields(state.results.data, readingFields, fields);
-
-    console.log(aqiReadings);
-
-    const unix_timestamp = state.results.data_time_stamp;
-    var readingDate = new Date(unix_timestamp * 1000);
-    var dateStr = formatAQIDate(readingDate);
-
-    const pm25 = aqiReadings['pm2.5'];
-    const pm25_10m = aqiReadings['pm2.5_10minute'];
-    const pm25_30m = aqiReadings['pm2.5_30minute'];
-    const pm25_60m = aqiReadings['pm2.5_60minute'];
-    const pm25_6h = aqiReadings['pm2.5_6hour'];
-    const pm25_24h = aqiReadings['pm2.5_24hour'];
-    const pm25_1wk = aqiReadings['pm2.5_1week'];
-
-    const aqiMessage = AQICategory(pm25_10m);
-
-    return (
-      <div>
-      <style> {`
-    .current-conditions {
-      width: 220px;
-      margin: 5px;
-      padding: 10px;
-      border-width: 3px;
-      border-color: black;
-      border-style: solid;
-      border-radius: 10px;
-      height: 250px;
-      ${AQICategoryCSS(pm25_10m)}
-    }
-    .pm25style {
-      ${AQICategoryCSS(pm25)}
-    }
-    .pm25_10mstyle {
-      ${AQICategoryCSS(pm25_10m)}
-    }
-    .pm25_30mstyle {
-      ${AQICategoryCSS(pm25_30m)}
-    }
-    .pm25_60mstyle {
-      ${AQICategoryCSS(pm25_60m)}
-    }
-    .pm25_6hstyle {
-      ${AQICategoryCSS(pm25_6h)}
-    }
-    .pm25_24hstyle {
-      ${AQICategoryCSS(pm25_24h)}
-    }
-    .pm25_1wkstyle {
-      ${AQICategoryCSS(pm25_1wk)}
-    }
-    .popup-time-stamp {
-      padding: 3px 0 3px;
-      white-space: nowrap;
-      font: 12px/20px 'Helvetica Neue',Arial,Helvetica,sans-serif;
-      /* color: black; */
-      box-sizing: border-box;
-    }
-    .popup-conditions {
-      font: 12px/20px 'Helvetica Neue',Arial,Helvetica,sans-serif;
-      -webkit-tap-highlight-color: transparent;
-      font-size: 16px;
-      font-weight: 700;
-      width: 48%;
-    }
-    .popup-large {
-      font-size: 68px;
-    }
-    .popup-aqi {
-      text-align: center;
-      font-weight: 700;
-      line-height: 1em;
-      width: 48%;
-      text-align: center;
-      margin: 0;
-      font-family: 'Helvetica Neue',Arial,Helvetica,sans-serif;
-    }
-    .legend-tooltip-popup {
-      position: relative;
-      display: inline-block;
-      margin-bottom: 10px;
-      bottom: 0px;
-    }
-    .xxst {
-      font-size: 8px;
-      height: 20px;
-      width: 30px;
-      font-family: 'Helvetica Neue',Arial,Helvetica,sans-serif;
-    }
-    .legend-tooltiptext div {
-      visibility: hidden;
-    }
-    .small-reading {
-      width: 14.18%;
-      text-align: center;
-      font-family: 'Helvetica Neue',Arial,Helvetica,sans-serif;
-    }
-    .message {
-      padding:10px 0 10px 0;
-      font-size: 13px;
-      height: 80px;
-    }
-    .flex-container {
-      /* We first create a flex layout context */
-      display: flex;
-
-      /* Then we define the flow direction
-         and if we allow the items to wrap
-       * Remember this is the same as:
-       * flex-direction: row;
-       * flex-wrap: wrap;
-       */
-      flex-flow: row nowrap;
-
-      /* Then we define how is distributed the remaining space */
-      justify-content: flex-start;
-
-      padding: 0;
-      margin: 0;
-      list-style: none;
-    }
-    `}
-  </style>
-  <div id="currentConditions" className="current-conditions">
-      <div className="fit popup-time-stamp" id="popup-time-stamp">{dateStr}</div>
-      <ul className="flex-container">
-        <li className="popup-conditions">10 Minute Average US EPA PM2.5 AQI is now</li>
-        <li className="popup-large popup-aqi">{pm25_10m}</li>
-      </ul>
-      <div className="message">{aqiMessage}</div>
-      <span className="legend-tooltip-popup small-reading pm25style">
-        <div className="xxst">Now</div>
-        {pm25}
-      </span>
-      <span className="legend-tooltip-popup small-reading pm25_10mstyle">
-        <div className="xxst">10 Min</div>
-        {pm25_10m}
-      </span>
-      <span className="legend-tooltip-popup small-reading pm25_30mstyle">
-        <div className="xxst">30 Min</div>
-        {pm25_30m}
-      </span>
-      <span className="legend-tooltip-popup small-reading pm25_60mstyle">
-        <div className="xxst">1 hr</div>
-        {pm25_60m}
-      </span>
-      <span className="legend-tooltip-popup small-reading pm25_6hstyle">
-        <div className="xxst">6 hr</div>
-        {pm25_6h}
-      </span>
-      <span className="legend-tooltip-popup small-reading pm25_24hstyle">
-        <div className="xxst">1 Day</div>
-        {pm25_24h}
-      </span>
-      <span className="legend-tooltip-popup small-reading pm25_1wkstyle">
-        <div className="xxst">Week</div>
-        {pm25_1wk}
-      </span>
-      </div>
-    </div>
-    );
-
-  } else {
-    return (
-      <div className={fullwrapper}>
-        <div className={wrapper}>
-          <div className={loadingwrapper}>
-            <div className={aqivalue}>Loading...</div>
-          </div>
-        </div>
-      </div>
-    );
+  if (!state || !state.results) {
+    state = initialState;
   }
-}
 
-export const initialState = {
-  state: {},
-  loading: <div className={fullwrapper}>
-    <div className={wrapper}>
-      <div className={loadingwrapper}>
-        <div className={aqivalue}>Loading...</div>
-      </div>
+  const aqiReadings = computeAvgPm25ReadingFields(state.results.data, readingFields, fields);
+
+  console.log(aqiReadings);
+
+  const unix_timestamp = state.results.data_time_stamp;
+  var readingDate = new Date(unix_timestamp * 1000);
+  var dateStr = formatAQIDate(readingDate);
+
+  const pm25 = aqiReadings['pm2.5'];
+  const pm25_10m = aqiReadings['pm2.5_10minute'];
+  const pm25_30m = aqiReadings['pm2.5_30minute'];
+  const pm25_60m = aqiReadings['pm2.5_60minute'];
+  const pm25_6h = aqiReadings['pm2.5_6hour'];
+  const pm25_24h = aqiReadings['pm2.5_24hour'];
+  const pm25_1wk = aqiReadings['pm2.5_1week'];
+
+  const aqiMessage = AQICategory(pm25_10m);
+
+  return (
+    <div>
+    <style> {`
+  .current-conditions {
+    width: 220px;
+    margin: 5px;
+    padding: 10px;
+    border-width: 3px;
+    border-color: black;
+    border-style: solid;
+    border-radius: 10px;
+    height: 250px;
+    ${AQICategoryCSS(pm25_10m)}
+  }
+  .pm25style {
+    ${AQICategoryCSS(pm25)}
+  }
+  .pm25_10mstyle {
+    ${AQICategoryCSS(pm25_10m)}
+  }
+  .pm25_30mstyle {
+    ${AQICategoryCSS(pm25_30m)}
+  }
+  .pm25_60mstyle {
+    ${AQICategoryCSS(pm25_60m)}
+  }
+  .pm25_6hstyle {
+    ${AQICategoryCSS(pm25_6h)}
+  }
+  .pm25_24hstyle {
+    ${AQICategoryCSS(pm25_24h)}
+  }
+  .pm25_1wkstyle {
+    ${AQICategoryCSS(pm25_1wk)}
+  }
+  .popup-time-stamp {
+    padding: 3px 0 3px;
+    white-space: nowrap;
+    font: 12px/20px 'Helvetica Neue',Arial,Helvetica,sans-serif;
+    /* color: black; */
+    box-sizing: border-box;
+  }
+  .popup-conditions {
+    font: 12px/20px 'Helvetica Neue',Arial,Helvetica,sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    font-size: 16px;
+    font-weight: 700;
+    width: 48%;
+  }
+  .popup-large {
+    font-size: 68px;
+  }
+  .popup-aqi {
+    text-align: center;
+    font-weight: 700;
+    line-height: 1em;
+    width: 48%;
+    text-align: center;
+    margin: 0;
+    font-family: 'Helvetica Neue',Arial,Helvetica,sans-serif;
+  }
+  .legend-tooltip-popup {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 10px;
+    bottom: 0px;
+  }
+  .xxst {
+    font-size: 8px;
+    height: 20px;
+    width: 30px;
+    font-family: 'Helvetica Neue',Arial,Helvetica,sans-serif;
+  }
+  .legend-tooltiptext div {
+    visibility: hidden;
+  }
+  .small-reading {
+    width: 14.18%;
+    text-align: center;
+    font-family: 'Helvetica Neue',Arial,Helvetica,sans-serif;
+  }
+  .message {
+    padding:10px 0 10px 0;
+    font-size: 13px;
+    height: 80px;
+  }
+  .flex-container {
+    /* We first create a flex layout context */
+    display: flex;
+
+    /* Then we define the flow direction
+       and if we allow the items to wrap
+     * Remember this is the same as:
+     * flex-direction: row;
+     * flex-wrap: wrap;
+     */
+    flex-flow: row nowrap;
+
+    /* Then we define how is distributed the remaining space */
+    justify-content: flex-start;
+
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+  `}
+</style>
+<div id="currentConditions" className="current-conditions">
+    <div className="fit popup-time-stamp" id="popup-time-stamp">{dateStr}</div>
+    <ul className="flex-container">
+      <li className="popup-conditions">10 Minute Average US EPA PM2.5 AQI is now</li>
+      <li className="popup-large popup-aqi">{pm25_10m}</li>
+    </ul>
+    <div className="message">{aqiMessage}</div>
+    <span className="legend-tooltip-popup small-reading pm25style">
+      <div className="xxst">Now</div>
+      {pm25}
+    </span>
+    <span className="legend-tooltip-popup small-reading pm25_10mstyle">
+      <div className="xxst">10 Min</div>
+      {pm25_10m}
+    </span>
+    <span className="legend-tooltip-popup small-reading pm25_30mstyle">
+      <div className="xxst">30 Min</div>
+      {pm25_30m}
+    </span>
+    <span className="legend-tooltip-popup small-reading pm25_60mstyle">
+      <div className="xxst">1 hr</div>
+      {pm25_60m}
+    </span>
+    <span className="legend-tooltip-popup small-reading pm25_6hstyle">
+      <div className="xxst">6 hr</div>
+      {pm25_6h}
+    </span>
+    <span className="legend-tooltip-popup small-reading pm25_24hstyle">
+      <div className="xxst">1 Day</div>
+      {pm25_24h}
+    </span>
+    <span className="legend-tooltip-popup small-reading pm25_1wkstyle">
+      <div className="xxst">Week</div>
+      {pm25_1wk}
+    </span>
     </div>
   </div>
-};
-
-export const updateState = (event, previousState) => {
-  if (event.data && !('error' in event.data)) {
-    return {
-      results: event.data
-    }
-  }
+  );
 };
