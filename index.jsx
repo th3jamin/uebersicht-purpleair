@@ -233,6 +233,7 @@ export const render = state => {
       width: 48%;
       text-align: center;
       margin: 0;
+      font-family: 'Helvetica Neue',Arial,Helvetica,sans-serif;
     }
     .legend-tooltip-popup {
       position: relative;
@@ -244,6 +245,7 @@ export const render = state => {
       font-size: 8px;
       height: 20px;
       width: 30px;
+      font-family: 'Helvetica Neue',Arial,Helvetica,sans-serif;
     }
     .legend-tooltiptext div {
       visibility: hidden;
@@ -251,6 +253,7 @@ export const render = state => {
     .small-reading {
       width: 14.18%;
       text-align: center;
+      font-family: 'Helvetica Neue',Arial,Helvetica,sans-serif;
     }
     .message {
       padding:10px 0 10px 0;
